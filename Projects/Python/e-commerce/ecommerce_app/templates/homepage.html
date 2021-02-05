@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'home.css' %}">
+    <!-- <link rel="stylesheet" type="text/css" href="static/home.css"> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="static/project_script.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Alata&display=swap" rel="stylesheet">
+</head>
+<div id="wrapper">
+<header id="bar">
+    <img src="static/images/pngwave.png">
+    <ul>
+        <li><a href="/login_index" class="header-link">Register</a></li>
+        <li id="login"><a href="#" class="header-link">Log In</a></li>
+    </ul>
+</header>
+<!-- <header id="bar">
+    <img src="images/pngwave.png">
+    <ul>
+        <li><a href="#" class="header-link">Home</a></li>
+        <li><a href="#" class="header-link">View Cart</a></li>
+        <li><a href="#" class="header-link">Log Out</a></li>
+    </ul>
+</header> -->
+
+<body>
+    {% if messages %}
+    <ul>    
+        {% for message in messages %}    
+            <li class="messages" style="color: red">{{ message }}</li>    
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <div id="log-form">
+        <form action="/login" method="POST">
+            {% csrf_token %}
+            <div class="log-input"><label>Email:</label> <input type="text" name="email"></div>
+            <div class="log-input"><label>Password:</label> <input type="password" name="password"></div>
+            <button>Log In</button>
+        </form>
+    </div>
+    <div id="column">
+        <div id="container">
+            {% if is_admin %}
+            <a href="/admin">Admin Page</a>
+            {% endif %}
+            <div id="category-list">
+                {% for category in all_categories %}
+                <div class="section">
+                    <img src="{{ category.products.first.img.url }}" alt="{{ category.category }}">
+                    <div class="desc">
+                        <h3><a href="/products/{{ category.id }}">{{ category.category }}</a></h3>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+</div>
+</body>
+
+</html>
